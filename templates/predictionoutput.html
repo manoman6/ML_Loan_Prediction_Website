@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+<body>
+    <h1>Here are your prediction results:</h1>
+    {% if result %}
+    <h1>Congratulations! You have a high likelihood to be approved for your mortgage loan!</h1>
+    {% else %}
+    <h1>Unfortunately, you have high likelihood to be denied for your mortgage loan!</h1>
+    {% endif %}
+    <h2>Below are statistics on how accurate the prediction is:</h2>
+    <div class="image-container">
+        <div class="image_item">
+            <h2>Feature Importance</h2>
+            <img src="{{ featuregraphpath }}" alt="Image of feature importance graph path">
+        </div>
+        <div class="image_item">
+            <h2>ROC-AUC Measurement</h2>
+            <h3>%{{ performanceDict["ROC-AUC"] * 100}}</h3>
+            <img src="{{ roccurvepath }}" alt="Image of Roc Curve Graph">
+        </div>
+        <div class="image_item">
+            <h2>Bar Plot Between Gender and Loan Approval</h2>
+            <img src="{{ barplotGender }}" alt="Image of Bar Plot">
+        </div>
+        <div class="image_item">
+            <h2>Box Plot of Applicant Income</h2>
+            <img src="{{ boxplotIncomes }}" alt="Image of scatterplot">
+        </div>
+        <div class="image_item">
+            <h2>Scatter Plot of Applicant Income Vs Loan Approval</h2>
+            <img src="{{ scatterincometoapproval }}" alt="Image of Scatterplot">
+        </div>
+        <div class="image_item">
+            <h2>Accuracy Measurement</h2>
+            <h3>%{{ performanceDict["Accuracy"] * 100}}</h3>
+        </div>
+        <div class="image_item">
+            <h2>F1 Score</h2>
+            <h3>%{{ performanceDict["F1 Score"] * 100}}</h3>
+        </div>
+        <div class="image_item">
+            <h2>Recall Measurement</h2>
+            <h3>%{{ performanceDict["Recall"] * 100}}</h3>
+        </div>
+        <div class="image_item">
+            <h2>Precision Measurement</h2>
+            <h3>%{{ performanceDict["Precision"] * 100}}</h3>
+        </div>
+
+    </div>
+
+</body>
+</html>

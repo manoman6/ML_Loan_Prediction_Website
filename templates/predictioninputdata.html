@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Input Data</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<h1> Please Fill Each Field With the Appropriate Data, this will go into
+    the extremely complex Artificial Intelligence Machine Learning Algorithm.
+</h1>
+<form id="input_data_form" action="" method="POST">
+    <p class="radio_button">
+        {{form.is_male.label}} <br>
+        {{form.is_male()}}
+    </p>
+    <p class="radio_button">
+        {{form.is_married.label}} <br>
+        {{form.is_married()}}
+    </p>
+    <p class="radio_button">
+        {{form.dependents.label}} <br>
+        {{form.dependents()}}
+    </p>
+    <p class="radio_button">
+        {{form.is_not_graduated.label}} <br>
+        {{form.is_not_graduated()}}
+    </p>
+    <p class="radio_button">
+        {{form.is_self_employed.label}} <br>
+        {{form.is_self_employed()}}
+    </p>
+    <p>
+        {{form.applicant_income.label}} <br>
+        ${{form.applicant_income()}}
+    </p>
+    <p>
+        {{form.coapplicant_income.label}} <br>
+        ${{form.coapplicant_income()}}
+    </p>
+    <p>
+        {{form.loan_amount.label}} <br>
+        ${{form.loan_amount()}}
+    </p>
+    <p>
+        {{form.loan_term.label}} <br>
+        {{form.loan_term()}}
+    </p>
+    <p class="radio_button">
+        {{form.is_credit_above_620.label}} <br>
+        {{form.is_credit_above_620()}}
+    </p>
+    <p class="radio_button">
+        {{form.property_area.label}} <br>
+        {{form.property_area()}}
+    </p>
+    <p> {{form.submit()}}</p>
+</form>
+</body>
+</html>

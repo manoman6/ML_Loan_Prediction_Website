@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<h1>Welcome to the Log in Page!</h1>
+{% if loginUnsuccessful %}
+<h2>Login attempt was unsuccessful, either you username or password was wrong!</h2>
+{% endif %}
+
+<form id="log_in_form" action="" method="POST">
+    <p>
+        {{form.username.label}} <br>
+        {{form.username(size=30)}}
+    </p>
+    <p>
+        {{form.password.label}} <br>
+        {{form.password(size=30)}}
+    </p>
+    <p>{{form.submit()}}</p>
+</form>
+</body>
+</html>

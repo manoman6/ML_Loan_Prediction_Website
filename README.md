@@ -1,2 +1,3 @@
 # ML_Loan_Prediction_Website
 A web app using Python on a Flask framework to help clients determine their home loan approval likelihood.
+A web app using Python on a Flask framework which uses a data set on loan approvals to train a Random Forest Model to determine home loan approvals. Processing the data set involves one hot encoding, ordinal encoding, and IQR to identify and eliminate outliers. Users are prompted to create an account with all user data stored on a MySQL database utilizing a session ID for user data retrieval. Model performance metrics are displayed for the client upon prediction.

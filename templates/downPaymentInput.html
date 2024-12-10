@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Down Payment Input</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #calc_resultdiv {
+            display: none;
+        }
+
+        #HowLongToSaveForm {
+            display: none;
+        }
+        #howlongtosaveformdiv {
+            display: none;
+        }
+
+        #DateOrPayForm {
+            display: none;
+        }
+        #dateorpayformdiv {
+            display: none;
+        }
+
+        #PaymentSavingsForm {
+            display: none;
+        }
+        #paymentsavingsformdiv {
+            display: none;
+        }
+
+        #savingsoutput {
+            display: none;
+        }
+        #savingsoutputdiv {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="downpaymentforms" id="downpaymentcalcformdiv">
+    <form id="DownPaymentCalcForm" action="" method="POST">
+        <p>
+            {{form.home_price.label}} <br>
+            {{form.home_price()}}
+        </p>
+        <p>
+            {{form.percent_down.label}} <br>
+            {{form.percent_down()}}<strong>%</strong>
+        </p>
+        <p>
+            {{form.starting_investment.label}} <br>
+            {{form.starting_investment()}}
+        </p>
+        <p>
+            {{form.submit.label}} <br>
+            {{form.submit()}}
+        </p>
+    </form>
+</div>
+<div class="downpaymentforms" id="calc_resultdiv">
+    <strong>
+        <p id="calc_result">
+        </p>
+    </strong>
+</div>
+
+<div class="downpaymentforms" id="dateorpayformdiv">
+    <form id="DateOrPayForm", action="", method="POST", autocomplete="off">
+        <p>
+            {{dateorpayform.date_or_pay.label()}} <br>
+            {{dateorpayform.date_or_pay()}}
+        </p>
+    </form>
+</div>
+
+<div class="downpaymentforms" id="howlongtosaveformdiv">
+    <form id="HowLongToSaveForm" action="", method="POST">
+        <p>
+            {{savings_form.date.label}} <br>
+            {{savings_form.date()}}
+        </p>
+    </form>
+</div>
+
+<div class="downpaymentforms" id="paymentsavingsformdiv">
+    <form id="PaymentSavingsForm" action="", method="POST">
+        <p>
+            {{payment_savings_form.payments.label}} <br>
+            {{payment_savings_form.payments()}}
+        </p>
+        <p>
+            {{payment_savings_form.submit()}}
+        </p>
+    </form>
+</div>
+
+<div class="downpaymentforms" id="savingsoutputdiv">
+    <strong>
+        <p id="savingsoutput">
+        </p>
+    </strong>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#DownPaymentCalcForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const home_price = $('#home_price').val();
+            const percent_down = $('#percent_down').val()
+            const starting_investment = $('#starting_investment').val()
+
+            $.ajax({
+                url: '/calculatedownpayment',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ home_price: home_price, percent_down:percent_down }),
+                success: function (response) {
+                    const formatted_down_payment = parseFloat(response.down_payment).toLocaleString();
+                    $('#calc_result').text(`Total Down Payment: $ ${formatted_down_payment}`);
+                    $('#calc_resultdiv').fadeIn();
+
+                    $('#dateorpayformdiv').fadeIn();
+                    $('#DateOrPayForm').fadeIn();
+
+                    $('html, body').animate({
+                        scrollTop: $('#dateorpayformdiv').offset().top
+                        }, 1000);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    $('#calc_result').text('An error ocurred.');
+                }
+            });
+        });
+        $('#DateOrPayForm').on('change', function (e) {
+            e.preventDefault();
+
+            const date_or_pay = $('input[name="date_or_pay"]:checked').val();
+
+            $.ajax({
+                url: '/dateorpaymentbased',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ date_or_pay: date_or_pay }),
+                success: function (response) {
+                    console.log("Value of date_or_pay:", date_or_pay);
+                    if (date_or_pay === "date") {
+                        console.log("Request successful:", response.data);
+                        $('#HowLongToSaveForm').fadeIn();
+                        $('#howlongtosaveformdiv').fadeIn();
+                        $('html, body').animate({
+                        scrollTop: $('#howlongtosaveformdiv').offset().top
+                        }, 1000);
+
+                        $('#PaymentSavingsForm').hide();
+                        $('#paymentsavingsformdiv').hide();
+
+                        $('#savingsoutput').hide();
+                        $('#savingsoutputdiv').hide();
+                    } else if (date_or_pay === "pay") {
+                        console.log("Request successful:", response.data);
+                        $('#PaymentSavingsForm').fadeIn();
+                        $('#paymentsavingsformdiv').fadeIn();
+                        $('html, body').animate({
+                        scrollTop: $('#paymentsavingsformdiv').offset().top
+                        }, 1000);
+
+                        $('#HowLongToSaveForm').hide();
+                        $('#howlongtosaveformdiv').hide();
+
+                        $('#savingsoutput').hide();
+                        $('#savingsoutputdiv').hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+
+        $('#HowLongToSaveForm').on('change', function (e) {
+            e.preventDefault();
+
+            const starting_investment = parseFloat($('#starting_investment').val());
+            const target_date = new Date($('#target_date').val());
+            const today = new Date();
+            const down_payment = parseFloat($('#calc_result').text().replace(/[^0-9.]+/g, ''));
+
+            const remaining_days = Math.ceil((target_date - today) / (1000 * 60 * 60 * 24));
+
+            if (remaining_days > 0) {
+                const weekly_savings_needed = ((down_payment - starting_investment) / (remaining_days / 7)).toFixed(2);
+                $('#savingsoutput').text(`You need to save $${weekly_savings_needed} weekly to meet your target.`);
+                $('#savingsoutput').fadeIn();
+                $('#savingsoutputdiv').fadeIn();
+                $('html, body').animate({
+                        scrollTop: $('#savingsoutputdiv').offset().top
+                        }, 1000);
+            } else {
+                $('#savingsoutput').text('Please select a future target date.');
+                $('#savingsoutput').fadeIn();
+                $('#savingsoutputdiv').fadeIn();
+                $('html, body').animate({
+                        scrollTop: $('#savingsoutputdiv').offset().top
+                        }, 1000);
+            }
+        });
+
+        $('#PaymentSavingsForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const starting_investment = parseFloat($('#starting_investment').val());
+            const weekly_savings = parseFloat($('#weekly_savings').val());
+            const down_payment = parseFloat($('#calc_result').text().replace(/[^0-9.]+/g, ''));
+
+            if (weekly_savings > 0) {
+                const weeks_required = Math.ceil((down_payment - starting_investment) / weekly_savings);
+                $('#savingsoutput').text(`You will need ${weeks_required} weeks to save.`);
+                $('#savingsoutput').fadeIn();
+                $('#savingsoutputdiv').fadeIn();
+                $('html, body').animate({
+                        scrollTop: $('#savingsoutputdiv').offset().top
+                        }, 1000);
+            } else {
+                $('#savingsoutput').text('Please enter a valid weekly savings amount.');
+                $('#savingsoutput').fadeIn();
+                $('#savingsoutputdiv').fadeIn();
+                $('html, body').animate({
+                        scrollTop: $('#savingsoutputdiv').offset().top
+                        }, 1000);
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

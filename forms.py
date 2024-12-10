@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, RadioField, IntegerField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, RadioField, IntegerField, BooleanField, DecimalField, DateField
 from wtforms import validators
 from wtforms.validators import InputRequired, length
 
@@ -52,3 +52,29 @@ class PredictionDataForm(FlaskForm):
 
     submit = SubmitField('Submit')
 
+class DownPaymentCalcForm(FlaskForm):
+    home_price = DecimalField("Enter The Price Of Your Home",
+                              validators=[InputRequired()])
+    percent_down = DecimalField('Enter Percentage Of Down Payment You Will Pay:',
+                                validators=[InputRequired()])
+    starting_investment = DecimalField('Enter Your Starting Investment in Dollars (How much You Already Have Saved):',
+                                       validators=[InputRequired()])
+    submit = SubmitField("Calculate")
+
+
+class DateOrPayForm(FlaskForm):
+    date_or_pay = RadioField("Woud you like to calculate your savings budget based on a calender date or dollar amounts?",
+                     choices=[('date', 'By a Selected Date'), ('pay','By a Dollar Amount')],
+                     default=None,
+                     validate_choice=False,
+                     )
+
+class HowLongToSaveForm(FlaskForm):
+    date = DateField("What Date Do You Want To Have Your Down Payment Saved Up By?",
+                     name='target_date')
+
+class PaymentSavingsForm(FlaskForm):
+    payments = DecimalField("How Much Can You Save a Week For Your Down Payment?",
+                            validators=[InputRequired()],
+                            name='weekly_savings')
+    submit = SubmitField("Calculate Savings Plan")

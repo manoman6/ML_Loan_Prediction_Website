@@ -1,6 +1,6 @@
-from flask import Flask, render_template, redirect, request, url_for, g
+from flask import Flask, render_template, redirect, request, url_for, g, jsonify
 from usercreation import *
-from forms import SignUpForm
+from forms import SignUpForm, DownPaymentCalcForm, HowLongToSaveForm, DateOrPayForm, PaymentSavingsForm
 from forms import LoginForm
 from flask import session
 from forms import PredictionDataForm
@@ -89,6 +89,34 @@ def prediction_output():
     scatterincometoapproval = os.path.join('static', 'scatterIncomeToApproval.png')
     return render_template("predictionoutput.html", result=result, performanceDict=performance_dict, featuregraphpath=featuregraphpath,
                            roccurvepath=roccurvepath, barplotGender=barplotgender, boxplotIncomes=boxplotIncomes, scatterincometoapproval=scatterincometoapproval)
+
+@app.route('/down_payment_input', methods=['Get','POST'])
+def downPaymentInput():
+    form = DownPaymentCalcForm()
+    dateorpayform = DateOrPayForm()
+    savings_form = HowLongToSaveForm()
+    payment_savings_form = PaymentSavingsForm()
+
+
+    # if request.method == 'POST' and form.is_submitted():
+    #     result = request.form
+    return render_template("downPaymentInput.html", form=form, savings_form=savings_form, dateorpayform=dateorpayform, payment_savings_form=payment_savings_form)
+
+@app.route('/calculatedownpayment', methods=['POST'])
+def calculate_down_payment():
+    data = request.get_json()
+    home_price = float(data.get('home_price'))
+    percent_down = float(data.get('percent_down'))
+    down_payment = home_price * (percent_down * .01)
+
+    return jsonify({'down_payment': down_payment})
+
+@app.route('/dateorpaymentbased', methods=['POST'])
+def date_or_payment_based():
+    data = request.get_json()
+    date_or_pay = str(data.get('date_or_pay'))
+
+    return jsonify({'date_or_pay': date_or_pay})
 
 if __name__ == '__main__':
     run_startup()

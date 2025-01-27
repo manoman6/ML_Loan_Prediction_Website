@@ -21,6 +21,11 @@ def run_startup():
 def entry():
     return render_template('entry.html')
 
+@app.route('/base')
+def base():
+    header_homes = os.path.join('static', 'header-homes.jpeg')
+    return render_template('base.html')
+
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
     form = SignUpForm()

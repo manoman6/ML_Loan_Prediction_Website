@@ -8,8 +8,8 @@ from flask import g
 
 
 def run_main():
-    dfTest = pd.read_csv('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/loan_sanction_test.csv')
-    df = pd.read_csv('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/loan_sanction_train.csv')
+    dfTest = pd.read_csv('loan_sanction_test.csv')
+    df = pd.read_csv('loan_sanction_train.csv')
     pd.set_option('display.max_rows', 20)
     pd.set_option('display.max_columns', None)
 

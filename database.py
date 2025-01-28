@@ -1,10 +1,25 @@
+import os
+
 import pymysql
 
+# mydb = pymysql.connect(
+#     host="localhost",
+#     user = 'mysql',
+#     passwd='password'
+# )
+
+db_config = {
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'user': os.getenv('DB_USER', 'mysql'),
+    'password': os.getenv('DB_PASSWORD', 'password')
+}
+
 mydb = pymysql.connect(
-    host="localhost",
-    user = 'mysql',
-    passwd='password'
+    host=db_config['host'],
+    user=db_config['user'],
+    password=db_config['password']
 )
+
 
 mycursor = mydb.cursor()
 

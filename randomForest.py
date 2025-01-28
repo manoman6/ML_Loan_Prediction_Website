@@ -48,7 +48,7 @@ def rocaucCurve(rf, X_test, y_test):
     plt.title("ROC Curve")
     plt.legend(loc='lower right')
     plt.grid()
-    plt.savefig('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/static/roc_curve.png')
+    plt.savefig('roc_curve.png')
     plt.close()
 
 def precisionRecallCurve(rf, X_test, y_test):
@@ -80,7 +80,7 @@ def featureImportanceGraph(rf, df):
     plt.title('Feature Importance')
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/static/feature_importance.png')
+    plt.savefig('feature_importance.png')
     plt.close()
 
 # Function to evaluate the model and create the performance dictionary

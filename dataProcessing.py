@@ -52,7 +52,7 @@ def dropOutliers(df):
 def boxplotIncomes(df):
     plt.boxplot(df["applicant_income"])
     plt.title("Box Plot of Incomes Post Data Processing")
-    plt.savefig('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/static/boxplotIncomes.png')
+    plt.savefig('boxplotIncomes.png')
     plt.close()
 
 def barplotGender(df):
@@ -79,7 +79,7 @@ def barplotGender(df):
 
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/static/barplotGender.png')
+    plt.savefig('barplotGender.png')
     plt.close()
 
 def scatterIncomeToApproval(df):
@@ -90,7 +90,7 @@ def scatterIncomeToApproval(df):
     plt.xlabel('Applicant Income')
     plt.ylabel('Outcome')
     plt.grid(True)
-    plt.savefig('/Users/emilianopadilla/PycharmProjects/loanApprovalPrediction/static/scatterIncomeToApproval')
+    plt.savefig('scatterIncomeToApproval')
     plt.close()
 
 

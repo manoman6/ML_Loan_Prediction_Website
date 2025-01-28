@@ -108,6 +108,10 @@ p {
    margin-left: -1.5rem;
 }
 
+#howlongtosaveformdiv {
+    margin-bottom: 6rem;
+}
+
 #uldiv {
     text-align: center;
     list-style: none;

@@ -31,13 +31,13 @@ DB_NAME=allusersdb
 ```
 * Save the ".env" file and ensure it is in the root directory.
 * Using Docker-Compose, build the application:
-  *This will build the docker image for the web application.
-  *Start the MySQL database container.
-  *Start the web application container.
+  * This will build the docker image for the web application.
+  * Start the MySQL database container.
+  * Start the web application container.
 ```CommandLine/terminal
 docker-compose up --build
 ```
-*Open your browser and navigate to:
+* Open your browser and navigate to:
 ```URL Bar
 http://localhost:8080
 ```
